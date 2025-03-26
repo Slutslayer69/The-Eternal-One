@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emission History</title>
+</head>
+<body>
+    <h2>Previous Calculations</h2>
+    <table border="1">
+        <tr>
+            <th>Vehicle</th>
+            <th>Distance (km)</th>
+            <th>Electricity (kWh)</th>
+            <th>Diet</th>
+            <th>Total Emissions (kg CO2e)</th>
+        </tr>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.vehicle }}</td>
+            <td>{{ record.distance }}</td>
+            <td>{{ record.electricity }}</td>
+            <td>{{ record.diet }}</td>
+            <td>{{ record.total_emissions }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/">🔄 Go Back</a>
+</body>
+</html>
