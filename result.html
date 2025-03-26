@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHG Emission Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #2C3E50, #BDC3C7); /* Elegant Blue-Gray Gradient */
+            text-align: center;
+            padding: 20px;
+            color: white; /* White text for contrast */
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            margin: auto;
+            color: #333; /* Dark text inside container */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+        .chart-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+        select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: none;
+            background-color: #2C3E50;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🌍 Your Greenhouse Gas Emissions</h2>
+        <p>🚗 Transport: {{ transport }} kg CO2e</p>
+        <p>⚡ Electricity: {{ electricity }} kg CO2e</p>
+        <p>🍽 Diet: {{ diet }} kg CO2e</p>
+        <h3>🌍 Total: <strong>{{ total }} kg CO2e</strong></h3>
+
+        <div class="chart-controls">
+            <label for="chartType">📊 Change Chart:</label>
+            <select id="chartType" onchange="updateChart()">
+                <option value="bar">Bar Chart</option>
+                <option value="pie">Pie Chart</option>
+                <option value="line">Line Chart</option>
+            </select>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="emissionChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        var ctx = document.getElementById('emissionChart').getContext('2d');
+        var chartType = 'bar';
+
+        var chartData = {
+            labels: ['Transport', 'Electricity', 'Diet'],
+            datasets: [{
+                label: 'Emissions (kg CO2e)',
+                data: [parseFloat("{{ transport }}"), parseFloat("{{ electricity }}"), parseFloat("{{ diet }}")],
+                backgroundColor: ['#3498db', '#f39c12', '#2ecc71'],
+                borderColor: ['#2980b9', '#d68910', '#27ae60'],
+                borderWidth: 1
+            }]
+        };
+
+        var chartOptions = { responsive: true, maintainAspectRatio: false };
+
+        var emissionChart = new Chart(ctx, { type: chartType, data: chartData, options: chartOptions });
+
+        function updateChart() {
+            var newType = document.getElementById('chartType').value;
+            emissionChart.destroy();
+            emissionChart = new Chart(ctx, { type: newType, data: chartData, options: chartOptions });
+        }
+    </script>
+
+</body>
+</html>
